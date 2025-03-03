@@ -7,6 +7,8 @@ import { Header } from "../Homepage Components/Header";
 import { HeroSection } from "../Homepage Components/HeroSection";
 import { StatsSection } from "../Homepage Components/StatsSection";
 import { TestimonialSection } from "../Homepage Components/TestimonialSection";
+import BlogNewsEvents from "./BlogPost";
+import RegistrationPage from "./RegisterHome";
 
 export const Homepage = () => {
     return (
@@ -19,6 +21,8 @@ export const Homepage = () => {
         <CourseSection />
         <TestimonialSection />
         <FaqSection />
+        <RegistrationPage/>
+        <BlogNewsEvents/>
         <Footer/>
       </div>
     );
