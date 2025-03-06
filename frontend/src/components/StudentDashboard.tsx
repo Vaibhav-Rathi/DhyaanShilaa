@@ -39,8 +39,8 @@ const StudentDashboard: React.FC = () => {
   
   <div className="flex-1 p-8">
     <div className="flex justify-between items-center mb-6">
-      <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
-      <div className="flex items-center gap-4 bg-white p-2 rounded-lg shadow-md">
+    <h1 className="text-4xl font-semibold text-gray-900 ml-6">Dashboard</h1>
+    <div className="flex items-center gap-4 bg-white p-2 rounded-lg shadow-md">
         <img src={profileImage} alt="User Avatar" className="w-10 h-10 rounded-full" />
         <div className="text-gray-700 text-sm">
           <p className="font-medium">Hi, {user.name}</p>
