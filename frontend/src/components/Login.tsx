@@ -67,14 +67,14 @@ const LoginPage = () => {
         }}>
           <div></div>
           <div className="relative p-10 flex flex-col h-full justify-center z-10 text-white">
-            <h1 className="text-4xl font-bold mb-4 text-indigo-700">Welcome Back!</h1>
-            <p className="mb-6 text-black">Log in to continue your learning journey.</p>
+            <h1 className="text-4xl font-bold mb-4 text-indigo-700 text-center">Welcome Back!</h1>
+            <p className="mb-6 text-black font-bold text-center">Log in to continue your learning journey.</p>
           </div>
         </div>
         
-        <div className="w-full md:w-1/2 bg-indigo-900 p-10 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 bg-indigo-900 p-10 flex flex-col justify-center ">
           <h2 className="text-3xl font-bold text-white mb-4">Login</h2>
-          <p className="text-white mb-8">Access your account and explore new opportunities.</p>
+          <p className="text-white mb-8 ">Access your account and explore new opportunities.</p>
           
           {error && (
             <div className="bg-red-500 text-white p-3 rounded mb-4">

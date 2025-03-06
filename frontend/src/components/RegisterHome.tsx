@@ -13,7 +13,7 @@ const RegistrationPage = () => {
           backgroundPosition: "center"
         }}>
           <div></div>
-          <div className="relative p-10 flex flex-col h-full justify-center z-10 text-white">
+          <div className="relative p-10 flex flex-col h-full justify-center items-center z-10 text-black text-center">
             <h1 className="text-4xl font-bold mb-4">One Step Closer to<br />Your Dream</h1>
             <p className="mb-6">An E-Learning service ready to help you become an expert</p>
           </div>
