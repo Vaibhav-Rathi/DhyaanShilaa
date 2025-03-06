@@ -3,6 +3,7 @@ import Overview from "../Student Dashboard Components/Overview";
 import Statistics from "../Student Dashboard Components/Statistics";
 import LearningActivities from "../Student Dashboard Components/LearningActivity";
 import Sidebar from "../Student Dashboard Components/Sidebar";
+
 import profileImage from "/image.png";
 
 type Course = {

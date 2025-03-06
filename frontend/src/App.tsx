@@ -7,6 +7,7 @@ import Dashboard from "./Instructor Dashboard/Dashboard";
 import {CreateCourse} from "./Instructor Dashboard/CreateCourse";
 import AdminDashboard from "./components/AdminDashboard"
 import ContentDashboard from "./Instructor Dashboard/MyCourses";
+import StudentProgress from "./Student Dashboard Components/StudentProgress"
 
 const App = () => {
     return (
@@ -20,6 +21,8 @@ const App = () => {
         <Route path="/ins-dashboard/my-courses" element={<ContentDashboard />} />
         <Route path="/ins-dashboard/create-course" element={<CreateCourse />} />
         <Route path="/adm-dashboard" element={<AdminDashboard />} />
+        <Route path="/mycourse" element={<StudentProgress/>} />
+
       </Routes>
     </Router>
   );

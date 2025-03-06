@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { FaTachometerAlt, FaBook, FaCalendarAlt, FaBars } from "react-icons/fa";
+import { FaTachometerAlt, FaBook, FaBars } from "react-icons/fa";
 
 interface Tab {
   name: string;
@@ -17,7 +17,6 @@ const Sidebar: React.FC = () => {
   const tabs: Tab[] = [
     { name: "Dashboard", icon: <FaTachometerAlt /> },
     { name: "My Course", icon: <FaBook /> },
-    { name: "My Events", icon: <FaCalendarAlt /> },
   ];
 
   return (
@@ -46,10 +45,10 @@ const Sidebar: React.FC = () => {
                 to={
                   tab.name === "Dashboard"
                     ? "/dashboard"
-                    : `/${tab.name.toLowerCase().replace(" ", "")}`
+                    : `/${tab.name.toLowerCase().replace(" ", "")}` // Ensuring the "My Course" tab navigates to /mycourse
                 }
                 className={({ isActive }) =>
-                  `flex items-center px-6 py-3 text-gray-500 hover:bg-gray-100 hover:text-blue-900 rounded-lg transition-all duration-300 ${
+                  `flex items-center px-6 py-3 text-gray-500 hover:bg-blue-200 hover:text-blue-900 rounded-lg transition-all duration-300 ${
                     isActive ? "bg-blue-900 text-white font-semibold" : ""
                   }`
                 }
