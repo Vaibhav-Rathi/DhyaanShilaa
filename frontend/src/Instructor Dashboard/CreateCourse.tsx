@@ -298,14 +298,6 @@ export const CreateCourse: React.FC = () => {
                 <h2 className="text-xl font-bold mb-5">Basic Information</h2>
                 <div className="flex justify-between items-center mt-2">
                   <h2 className="text-base font-semibold">Basic Information</h2>
-                  <div className="flex gap-2">
-                    <button className="px-4 py-1 bg-red-100 text-red-600 rounded-md shadow-sm hover:bg-red-200">
-                      Save
-                    </button>
-                    <button className="px-4 py-1 bg-red-100 text-red-600 rounded-md shadow-sm hover:bg-red-200">
-                      Save & Preview
-                    </button>
-                  </div>
                 </div>
                 <form className="mt-3 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
                   <div className="col-span-2">
@@ -409,14 +401,6 @@ export const CreateCourse: React.FC = () => {
                   <h2 className="text-base font-semibold">
                     Advance Information
                   </h2>
-                  <div className="flex gap-3">
-                    <button className="px-4 py-1 bg-red-100 text-red-600 rounded-md shadow-sm hover:bg-red-200">
-                      Save
-                    </button>
-                    <button className="px-4 py-1 bg-red-100 text-red-600 rounded-md shadow-sm hover:bg-red-200">
-                      Save & Preview
-                    </button>
-                  </div>
                 </div>
                 <div className="flex flex-col mb-5 md:flex-row md:justify-between">
                   <div className="w-full flex flex-col mb-3 md:w-[48%]">
@@ -578,16 +562,6 @@ export const CreateCourse: React.FC = () => {
               <div>
                 <div className="flex justify-between items-center p-2 mb-4">
                   <h2 className="text-xl font-bold">Course Curriculum</h2>
-                  <div className="flex gap-2">
-                    <button className="px-4 py-1 bg-red-100 text-red-600 rounded-md shadow-sm hover:bg-red-200">
-                      {" "}
-                      Save
-                    </button>
-                    <button className="px-4 py-1 bg-red-100 text-red-600 rounded-md shadow-sm hover:bg-red-200">
-                      {" "}
-                      Save & Preview
-                    </button>
-                  </div>
                 </div>
 
                 {/* Display Thumbnail and Trailer in Curriculum Tab */}
@@ -825,15 +799,6 @@ export const CreateCourse: React.FC = () => {
               <div className="p-6 bg-white rounded-lg shadow-md">
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-semibold">Publish Course</h2>
-                  <div className="flex gap-2">
-                    <button className="px-4 py-1 bg-red-100 text-red-600 rounded-md shadow-sm hover:bg-red-200">
-                      {" "}
-                      Save
-                    </button>
-                    <button className="px-4 py-1 bg-red-100 text-red-600 rounded-md shadow-sm hover:bg-red-200">
-                      Save & Preview
-                    </button>
-                  </div>
                 </div>
                 {/* Message Section */}
                 <div className="mb-6">

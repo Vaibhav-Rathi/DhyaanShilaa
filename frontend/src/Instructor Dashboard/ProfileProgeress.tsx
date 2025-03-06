@@ -13,35 +13,38 @@ export const ProfileProgress: React.FC<ProfileProgressProps> = ({ ProfileDashboa
   }, [progressPercentage]);
 
   return (
-    <div className="bg-[#1E1E50] p-6 shadow rounded-lg mt-4">
-      <div className="flex justify-between items-center mb-4">
+    <div className="bg-[#1E1E50] p-4 md:p-6 shadow rounded-lg mt-4">
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0">
         <div className="flex items-center">
           <img
             src={ProfileDashboard}
             alt="Vako Shvili"
-            className="w-12 h-12 rounded-full mr-3"
+            className="w-10 h-10 md:w-12 md:h-12 rounded-full mr-3"
           />
           <div>
             <div className="font-semibold text-white">Vako Shvili</div>
             <div className="text-sm text-white">vako.shvili@gmail.com</div>
           </div>
         </div>
-        <div className="flex items-center">
-          <div className="mr-3 text-white">{steps}/4 Steps</div>
-          <div className="mr-3 text-white flex items-center">
-            <div className="bg-gray-700 rounded-full h-4 w-24 mr-2">
+        
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-3 sm:space-y-0 sm:space-x-3">
+          <div className="text-white">{steps}/4 Steps</div>
+          
+          <div className="text-white flex items-center">
+            <div className="bg-gray-700 rounded-full h-3 md:h-4 w-20 md:w-24 mr-2">
               <div
-                className="bg-green-500 rounded-full h-4"
+                className="bg-green-500 rounded-full h-3 md:h-4"
                 style={{ width: `${progressPercentage}%` }}
               ></div>
             </div>
-            {progressPercentage}% Completed
+            <span className="whitespace-nowrap">{progressPercentage}% Completed</span>
           </div>
-          <button className="bg-[#FF6600] hover:bg-[#CC5200] text-white font-bold py-2 px-4 rounded">
+          
+          <button className="bg-[#FF6600] hover:bg-[#CC5200] text-white font-bold py-1 md:py-2 px-3 md:px-4 rounded text-sm md:text-base">
             Edit Biography
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 ml-2 inline-block"
+              className="h-3 w-3 md:h-4 md:w-4 ml-1 md:ml-2 inline-block"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

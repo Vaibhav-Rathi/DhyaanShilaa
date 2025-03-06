@@ -15,33 +15,26 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      // Make the API call to login and wait for the response
       const response = await axios.post("http://localhost:3000/api/auth/login", credentials);
       
-      // If we get here, authentication was successful
       console.log("Login successful:", response.data);
       
-      // Extract user role from response
       const userRole = response.data.user?.role || "student";
       
-      // Wait briefly to ensure any tokens/cookies are set
       setTimeout(() => {
-        // Navigate based on role
         if (userRole === "admin") {
           navigate("/adm-dashboard");
         } else if (userRole === "instructor") {
           navigate("/ins-dashboard");
         } else {
-          // Default for student or any other role
           navigate("/dashboard");
         }
         setIsLoading(false);
-      }, 500); // Short delay for better UX
+      }, 500);
       
     } catch (error) {
       setIsLoading(false);
       if (axios.isAxiosError(error)) {
-        // Handle specific error cases from backend
         if (error.response?.status === 401) {
           setError("Invalid email or password. Please try again.");
         } else {
@@ -74,8 +67,8 @@ const LoginPage = () => {
         }}>
           <div></div>
           <div className="relative p-10 flex flex-col h-full justify-center z-10 text-white">
-            <h1 className="text-4xl font-bold mb-4">Welcome Back!</h1>
-            <p className="mb-6">Log in to continue your learning journey.</p>
+            <h1 className="text-4xl font-bold mb-4 text-indigo-700">Welcome Back!</h1>
+            <p className="mb-6 text-black">Log in to continue your learning journey.</p>
           </div>
         </div>
         

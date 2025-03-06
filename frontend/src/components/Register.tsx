@@ -2,18 +2,43 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 const RegistrationPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [user, setUser] = useState({ name: "", email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "" });
   const navigate = useNavigate();
+
+  // Email validation function
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Handle email change with validation
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newEmail = e.target.value;
+    setUser({ ...user, email: newEmail });
+    
+    if (newEmail && !validateEmail(newEmail)) {
+      setErrors({ ...errors, email: "Please enter a valid email address" });
+    } else {
+      setErrors({ ...errors, email: "" });
+    }
+  };
 
   const registerUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate email before submission
+    if (!validateEmail(user.email)) {
+      setErrors({ ...errors, email: "Please enter a valid email address" });
+      return;
+    }
+
     try {
       const response = await axios.post("http://localhost:3000/api/auth/register", user);
       console.log("Registration successful:", response.data);
+      navigate("/dashboard");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
         console.error("Error registering user:", error.response?.data || error.message);
@@ -41,8 +66,8 @@ const RegistrationPage = () => {
           backgroundPosition: "center"
         }}>
           <div className="relative p-10 flex flex-col h-full justify-center z-10 text-white">
-            <h1 className="text-4xl font-bold mb-4">One Step Closer to<br />Your Dream</h1>
-            <p className="mb-6">An E-Learning service ready to help you become an expert</p>
+            <h1 className="text-4xl font-bold mb-4 text-indigo-700">One Step Closer to<br />Your Dream</h1>
+            <p className="mb-6 text-black">An E-Learning service ready to help you become an expert</p>
           </div>
         </div>
         
@@ -59,6 +84,7 @@ const RegistrationPage = () => {
                 value={user.name}
                 onChange={(e) => setUser({ ...user, name: e.target.value })}
                 className="w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
               />
             </div>
             
@@ -67,9 +93,15 @@ const RegistrationPage = () => {
                 type="email" 
                 placeholder="Email"
                 value={user.email}
-                onChange={(e) => setUser({ ...user, email: e.target.value })}
-                className="w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                onChange={handleEmailChange}
+                className={`w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border ${
+                  errors.email ? "border-red-500" : "border-indigo-700"
+                } focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                required
               />
+              {errors.email && (
+                <p className="mt-1 text-red-400 text-sm">{errors.email}</p>
+              )}
             </div>
             
             <div className="relative">
@@ -79,6 +111,7 @@ const RegistrationPage = () => {
                 value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
                 className="w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
               />
               <button 
                 type="button" 
@@ -98,7 +131,6 @@ const RegistrationPage = () => {
             </div>
             
             <button 
-              onClick={()=>navigate("/dashboard")}
               type="submit" 
               className="w-full py-4 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400 transition duration-200"
             >
