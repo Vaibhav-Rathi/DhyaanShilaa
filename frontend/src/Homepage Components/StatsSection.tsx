@@ -1,40 +1,32 @@
 export const StatsSection = () => {
-    const stats = [
-      { value: '21,000+', label: 'Students Enrolled' },
-      { value: '100+', label: 'Courses' },
-      { value: '150+', label: 'Instructors' }
-    ];
-    const partners = ['EDUVISTA', 'LEARNX', 'SCHOLARIA', 'MENTORA', 'KNOWLIFY'];
-  
-    return (
-      <section className="py-6 bg-gradient-to-br from-blue-50 to-white">
-        <div className="container mx-auto px-6 flex flex-wrap justify-center items-center gap-6 overflow-auto">
-          {stats.map((stat, index) => (
-            <StatItem key={index} value={stat.value} label={stat.label} />
-          ))}
-          <div className=" space-y-2 space-x-6 bg-amber-200 p-2 rounded-lg">
-            <div className="text-xl font-bold text-slate-700 flex justify-center">Partners</div>
-            <div className="flex space-x-3">
-                {partners.map((partner, index) => (
-                  <div
-                    key={index}
-                    className="px-4 py-2 rounded-lg shadow-md text-white font-semibold transition-transform transform hover:scale-105"
-                    style={{ background: "linear-gradient(135deg, #ff9a8b, #ff6b6b, #a044ff)" }}
-                  >
-                    {partner}
-                  </div>
-                ))}
-            </div>
+  return (
+    <div className="bg-gray-100 py-10">
+      <div className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-16 flex flex-col items-center md:items-start">
+        
+        <div className="flex flex-col sm:flex-row sm:justify-center md:justify-start space-y-6 sm:space-y-0 sm:space-x-10 text-center md:text-left">
+          <div>
+            <h2 className="text-2xl font-semibold">21,000+</h2>
+            <p className="text-gray-500">Registered Students</p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold">100+</h2>
+            <p className="text-gray-500">Expert Instructors</p>
+          </div>
+          <div>
+            <h2 className="text-2xl font-semibold">150+</h2>
+            <p className="text-gray-500">Courses</p>
           </div>
         </div>
-      </section>
-    );
-  };
-  
-  export const StatItem = ({ value, label }: any) => (
-    <div className="bg-white shadow-lg rounded-xl px-6 py-4 transition-all transform hover:scale-105 text-center">
-      <div className="font-bold text-3xl text-gray-900">{value}</div>
-      <div className="text-gray-600 text-sm">{label}</div>
+
+        <div className="flex flex-wrap justify-center md:justify-start gap-4 sm:gap-6 mt-8">
+          {["L", "D", "O", "N", "O"].map((letter, index) => (
+            <span key={index} className="text-lg font-semibold flex items-center space-x-2">
+              <span className="w-6 h-6 bg-black text-white flex items-center justify-center rounded">{letter}</span>
+              <span>{["LOREM", "DITLANCE", "OWTHEST", "NEOVASI", "ONAGO"][index]}</span>
+            </span>
+          ))}
+        </div>
+      </div>
     </div>
   );
-  
+};

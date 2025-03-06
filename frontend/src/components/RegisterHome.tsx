@@ -8,7 +8,7 @@ const RegistrationPage = () => {
 
       <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto overflow-hidden rounded-lg">
         <div className="relative w-full md:w-1/2 bg-cover bg-center" style={{ 
-          backgroundImage: "url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29mZmVlJTIwbGFwdG9wfGVufDB8fDB8fHww')",
+          backgroundImage: "url('/RegisterImage.png')",
           backgroundSize: "cover",
           backgroundPosition: "center"
         }}>

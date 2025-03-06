@@ -1,12 +1,32 @@
+import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 
 const RegistrationPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [user, setUser] = useState({ name: "", email: "", password: "" });
+  const navigate = useNavigate();
+
+  const registerUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post("http://localhost:3000/api/auth/register", user);
+      console.log("Registration successful:", response.data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error)) {
+        console.error("Error registering user:", error.response?.data || error.message);
+      } else {
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="p-6">
-        <a href="#" className="flex items-center text-gray-600 hover:text-gray-800">
+        <a href="/" className="flex items-center text-gray-600 hover:text-gray-800">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
@@ -16,11 +36,10 @@ const RegistrationPage = () => {
 
       <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto overflow-hidden rounded-lg">
         <div className="relative w-full md:w-1/2 bg-cover bg-center" style={{ 
-          backgroundImage: "url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29mZmVlJTIwbGFwdG9wfGVufDB8fDB8fHww')",
+          backgroundImage: "url('/RegisterImage.png')",
           backgroundSize: "cover",
           backgroundPosition: "center"
         }}>
-          <div></div>
           <div className="relative p-10 flex flex-col h-full justify-center z-10 text-white">
             <h1 className="text-4xl font-bold mb-4">One Step Closer to<br />Your Dream</h1>
             <p className="mb-6">An E-Learning service ready to help you become an expert</p>
@@ -31,11 +50,14 @@ const RegistrationPage = () => {
           <h2 className="text-3xl font-bold text-white mb-4">Register</h2>
           <p className="text-white mb-8">Get ready for a future filled with opportunities.</p>
           
-          <form className="space-y-6">
+          {/* Form */}
+          <form className="space-y-6" onSubmit={registerUser}>
             <div>
               <input 
                 type="text" 
-                placeholder="Your Name" 
+                placeholder="Your Name"
+                value={user.name}
+                onChange={(e) => setUser({ ...user, name: e.target.value })}
                 className="w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
@@ -43,7 +65,9 @@ const RegistrationPage = () => {
             <div>
               <input 
                 type="email" 
-                placeholder="Email" 
+                placeholder="Email"
+                value={user.email}
+                onChange={(e) => setUser({ ...user, email: e.target.value })}
                 className="w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
@@ -51,7 +75,9 @@ const RegistrationPage = () => {
             <div className="relative">
               <input 
                 type={showPassword ? "text" : "password"} 
-                placeholder="Password" 
+                placeholder="Password"
+                value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
                 className="w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button 
@@ -72,6 +98,7 @@ const RegistrationPage = () => {
             </div>
             
             <button 
+              onClick={()=>navigate("/dashboard")}
               type="submit" 
               className="w-full py-4 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400 transition duration-200"
             >

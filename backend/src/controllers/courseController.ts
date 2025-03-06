@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import Course, { ICourse } from "../models/Course";
-import mongoose from "mongoose";
+import { JwtPayload } from "jsonwebtoken";
+
+interface AuthenticatedRequest extends Request {
+  user?: JwtPayload & { id: string };
+}
 
 export const getCourses = async (req: Request, res: Response) => {
   try {
@@ -103,11 +107,35 @@ export const getCourse = async (req: Request, res: Response) => {
   }
 };
 
-export const createCourse = async (req: Request, res: Response) => {
+export const createCourse = async (req: AuthenticatedRequest, res: Response) => {
   try {
-    req.body.instructor = (req as any).user.id;
+    if (!req.user) {
+      return res.status(401).json({ success: false, message: "Unauthorized" });
+    }
 
-    const course = await Course.create(req.body);
+    const { files, body } = req as any;
+
+    body.instructor = req.user.id;
+
+    if (files?.thumbnail) {
+      body.thumbnail = files.thumbnail.data;
+      body.thumbnailContentType = files.thumbnail.mimetype;
+    }
+
+    if (files?.trailer) {
+      body.trailer = files.trailer.data;
+      body.trailerContentType = files.trailer.mimetype;
+    }
+
+    if (files?.lectures) {
+      body.curriculum = files.lectures.map((lecture: any) => ({
+        lecture: lecture.data,
+        lectureContentType: lecture.mimetype,
+        subLectures: [],
+      }));
+    }
+
+    const course = await Course.create(body);
 
     res.status(201).json({
       success: true,

@@ -1,12 +1,64 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogin = async (e:any) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    try {
+      // Make the API call to login and wait for the response
+      const response = await axios.post("http://localhost:3000/api/auth/login", credentials);
+      
+      // If we get here, authentication was successful
+      console.log("Login successful:", response.data);
+      
+      // Extract user role from response
+      const userRole = response.data.user?.role || "student";
+      
+      // Wait briefly to ensure any tokens/cookies are set
+      setTimeout(() => {
+        // Navigate based on role
+        if (userRole === "admin") {
+          navigate("/adm-dashboard");
+        } else if (userRole === "instructor") {
+          navigate("/ins-dashboard");
+        } else {
+          // Default for student or any other role
+          navigate("/dashboard");
+        }
+        setIsLoading(false);
+      }, 500); // Short delay for better UX
+      
+    } catch (error) {
+      setIsLoading(false);
+      if (axios.isAxiosError(error)) {
+        // Handle specific error cases from backend
+        if (error.response?.status === 401) {
+          setError("Invalid email or password. Please try again.");
+        } else {
+          setError(error.response?.data?.message || "Login failed. Please check your credentials.");
+        }
+        console.error("Error logging in:", error.response?.data || error.message);
+      } else {
+        setError("An unexpected error occurred");
+        console.error("Unexpected error:", error);
+      }
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="p-6">
-        <a href="#" className="flex items-center text-gray-600 hover:text-gray-800">
+        <a href="/" className="flex items-center text-gray-600 hover:text-gray-800">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clipRule="evenodd" />
           </svg>
@@ -16,7 +68,7 @@ const LoginPage = () => {
 
       <div className="flex flex-col md:flex-row w-full max-w-6xl mx-auto overflow-hidden rounded-lg">
         <div className="relative w-full md:w-1/2 bg-cover bg-center" style={{ 
-          backgroundImage: "url('https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8Y29mZmVlJTIwbGFwdG9wfGVufDB8fDB8fHww')",
+          backgroundImage: "url('/RegisterImage.png')",
           backgroundSize: "cover",
           backgroundPosition: "center"
         }}>
@@ -31,12 +83,22 @@ const LoginPage = () => {
           <h2 className="text-3xl font-bold text-white mb-4">Login</h2>
           <p className="text-white mb-8">Access your account and explore new opportunities.</p>
           
-          <form className="space-y-6">
+          {error && (
+            <div className="bg-red-500 text-white p-3 rounded mb-4">
+              {error}
+            </div>
+          )}
+          
+          <form className="space-y-6" onSubmit={handleLogin}>
             <div>
               <input 
                 type="email" 
                 placeholder="Email" 
+                value={credentials.email}
+                onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
                 className="w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
+                disabled={isLoading}
               />
             </div>
             
@@ -44,12 +106,17 @@ const LoginPage = () => {
               <input 
                 type={showPassword ? "text" : "password"} 
                 placeholder="Password" 
+                value={credentials.password}
+                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                 className="w-full p-4 rounded bg-indigo-800 text-white placeholder-gray-300 border border-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                required
+                disabled={isLoading}
               />
               <button 
                 type="button" 
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute inset-y-0 right-4 flex items-center text-gray-300 hover:text-white"
+                disabled={isLoading}
               >
                 {showPassword ? (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -65,9 +132,10 @@ const LoginPage = () => {
             
             <button 
               type="submit" 
-              className="w-full py-4 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400 transition duration-200"
+              className={`w-full py-4 bg-yellow-300 text-gray-800 font-bold rounded hover:bg-yellow-400 transition duration-200 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
+              disabled={isLoading}
             >
-              LOGIN
+              {isLoading ? 'LOGGING IN...' : 'LOGIN'}
             </button>
           </form>
           

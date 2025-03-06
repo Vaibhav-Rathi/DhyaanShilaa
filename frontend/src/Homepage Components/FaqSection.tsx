@@ -41,9 +41,11 @@ export const FaqSection = () => {
   ];
 
   return (
-    <section className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4 max-w-2xl">
-        <h2 className="text-3xl font-bold text-center mb-8">Frequently Asked Questions</h2>
+    <section className="py-12 px-4 bg-gray-50 md:py-16">
+      <div className="container mx-auto px-4 max-w-xl lg:max-w-2xl">
+        <h2 className="text-2xl md:text-3xl font-bold text-center mb-6 md:mb-8">
+          Frequently Asked Questions
+        </h2>
         <div className="space-y-4">
           {faqItems.map((item, index) => (
             <FaqItem
@@ -77,17 +79,17 @@ export const FaqItem = ({
   return (
     <div className="border border-gray-200 rounded-lg overflow-hidden shadow-sm">
       <button
-        className="w-full flex justify-between items-center p-4 bg-white hover:bg-gray-100 transition-colors"
+        className="w-full flex justify-between items-center p-4 bg-white hover:bg-gray-100 transition-colors text-left"
         onClick={onClick}
       >
         <div className="flex items-center">
           <span className="text-indigo-600 font-bold mr-3">{number}</span>
-          <span className="font-medium text-gray-800">{question}</span>
+          <span className="font-medium text-gray-800 text-sm md:text-base">
+            {question}
+          </span>
         </div>
         <svg
-          className={`w-5 h-5 transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
-          }`}
+          className={`w-5 h-5 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -97,7 +99,7 @@ export const FaqItem = ({
       </button>
       <div
         className={`transition-all duration-300 ${
-          isOpen ? "max-h-40 p-4 bg-gray-50" : "max-h-0 p-0 overflow-hidden"
+          isOpen ? "max-h-40 p-4 bg-gray-50 text-sm md:text-base" : "max-h-0 p-0 overflow-hidden"
         }`}
       >
         <p className="text-gray-600">{answer}</p>

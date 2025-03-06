@@ -1,33 +1,14 @@
-
 const Logo = () => {
-  const gradientStyle = {
-    backgroundImage: "linear-gradient(to right, #ffcc00, #ff9900, #ff6600)",
-    WebkitBackgroundClip: "text",
-    color: "transparent",
-    backgroundSize: "200% 200%",
-    animation: "gradient 2s infinite linear",
-  };
-
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
+    <div className="flex items-center gap-x-3">
       <img
-        src="/DhyaanShilaa.webp"
-        alt=""
-        width={40}
-        style={{ borderRadius: "50%" }}
+        src="/Logo.ico"
+        alt="Edutech Logo"
+        className="w-12 h-12 object-contain"
       />
-      <div style={{ fontSize: "2rem", fontWeight: "bold", ...gradientStyle }}>
-        DhyaanShilaa
+      <div className="text-3xl mb-2 font-semibold tracking-wide">
+        EinfraTech
       </div>
-      <style>
-        {`
-          @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-          }
-        `}
-      </style>
     </div>
   );
 };

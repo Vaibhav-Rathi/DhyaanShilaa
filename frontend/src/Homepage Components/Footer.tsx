@@ -5,13 +5,13 @@ export const Footer = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
   
             <div>
-              <h3 className="font-bold text-sm mb-3">DhyaanShila</h3>
+              <h3 className="font-bold text-sm mb-3">[Edutech]</h3>
               <p className="text-gray-400 text-xs mb-4">
                 Bringing beginners and experts together through our platform.
               </p>
               <div className="bg-yellow-500 text-indigo-950 px-3 py-2 rounded-md">
                 <div className="font-bold text-xs">Contact Us</div>
-                <div className="text-xs mt-1">info@dhyaanshila.com</div>
+                <div className="text-xs mt-1">info@Edutech.com</div>
                 <div className="text-xs">(625) 333 222 123</div>
               </div>
             </div>
