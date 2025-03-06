@@ -19,7 +19,7 @@ const App = () => {
         <Route path="/ins-dashboard" element={<Dashboard />} />
         <Route path="/ins-dashboard/my-courses" element={<ContentDashboard />} />
         <Route path="/ins-dashboard/create-course" element={<CreateCourse />} />
-        <Route path="/adm-dashboard/" element={<AdminDashboard />} />
+        <Route path="/adm-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
