@@ -38,9 +38,7 @@ const Dashboard = () => {
       <main className="flex-1 flex flex-col p-4 mt-5">
         <TopNavigation heading="Dashboard" />
         
-        <div className="flex-1 p-4">
-          <h1 className="text-3xl font-bold">Dashboard</h1>
-          
+        <div className="flex-1 p-4">          
           <QuickStats/>
           
           <ProfileProgress ProfileDashboard={ProfileDashboard} />

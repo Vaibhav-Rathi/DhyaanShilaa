@@ -4,12 +4,22 @@ import content1 from '../assets/web_development.png';
 import content2 from '../assets/digital_marketing.png';
 import content3 from '../assets/machinelearning.png';
 import content4 from '../assets/beginner.png';
-import adminProfile from '../assets/admin-profile.png';
 import { Sidebar } from './Sidebar';
 import { TopNavigation } from './TopNavigation';
 
 // Define props interface for CourseCard component
 interface CourseCardProps {
+  title: string;
+  description: string;
+  hours: string;
+  videos: string;
+  students: string;
+  image: string;
+  rating: string;
+}
+
+// Define a course type
+interface Course {
   title: string;
   description: string;
   hours: string;
@@ -26,6 +36,56 @@ interface CourseAdvanceProps {
 
 function ContentDashboard(): React.ReactElement {
   const [showCourseAdvance, setShowCourseAdvance] = useState<boolean>(false);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  
+  // Define all courses
+  const allCourses: Course[] = [
+    {
+      title: "Web Development Basics",
+      description: "Learning materials on beginner-level website creation",
+      hours: "4.5 Hours",
+      videos: "20 Video",
+      students: "1,900 Students",
+      image: content1,
+      rating: "4.9"
+    },
+    {
+      title: "Digital Marketing 101",
+      description: "Materials on beginner strategies and concepts of marketing",
+      hours: "6.2 Hours",
+      videos: "32 Video",
+      students: "930 Students",
+      image: content2,
+      rating: "4.9"
+    },
+    {
+      title: "Machine Learning 101",
+      description: "Understand the foundational concepts of machine learning",
+      hours: "7 Hours",
+      videos: "17 Video",
+      students: "200 Students",
+      image: content3,
+      rating: "4.9"
+    },
+    {
+      title: "Beginner UI/UX",
+      description: "Fundamentals of theory and practice in the world of UI/UX design",
+      hours: "5 Hours",
+      videos: "25 Video",
+      students: "1,150 Students",
+      image: content4,
+      rating: "4.9"
+    }
+  ];
+  
+  // Filter courses based on search query
+  const filteredCourses = allCourses.filter((course) => {
+    const searchText = searchQuery.toLowerCase();
+    return (
+      course.title.toLowerCase().includes(searchText) ||
+      course.description.toLowerCase().includes(searchText)
+    );
+  });
   
   const handleCreateCourse = (): void => { 
     setShowCourseAdvance(true);
@@ -42,6 +102,10 @@ function ContentDashboard(): React.ReactElement {
     }
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-100">
       <Sidebar/>
@@ -53,52 +117,36 @@ function ContentDashboard(): React.ReactElement {
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
-          <input type="text" placeholder="Search for Courses..." className="border p-2 rounded-md w-full md:w-3/4 mb-4 md:mb-0" />
+          <input 
+            type="text" 
+            placeholder="Search for Courses..." 
+            className="border p-2 rounded-md w-full md:w-3/4 mb-4 md:mb-0" 
+            value={searchQuery}
+            onChange={handleSearchChange}
+          />
           <input type="file" id="course-upload" className="hidden" onChange={handleCourseUpload} />
         </div>
 
-        <div className="flex flex-wrap space-x-0 md:space-x-4 mb-8">
-          <button className="bg-gray-300 p-2 rounded-md text-gray-700 m-1">All Courses</button>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <CourseCard
-            title="Web Development Basics"
-            description="Learning materials on beginner-level website creation"
-            hours="4.5 Hours"
-            videos="20 Video"
-            students="1,900 Students"
-            image={content1}
-            rating="4.9"
-          />
-          <CourseCard
-            title="Digital Marketing 101"
-            description="Materials on beginner strategies and concepts of marketing"
-            hours="6.2 Hours"
-            videos="32 Video"
-            students="930 Students"
-            image={content2}
-            rating="4.9"
-          />
-          <CourseCard
-            title="Machine Learning 101"
-            description="Understand the foundational concepts of machine learning"
-            hours="7 Hours"
-            videos="17 Video"
-            students="200 Students"
-            image={content3}
-            rating="4.9"
-          />
-          <CourseCard
-            title="Beginner UI/UX"
-            description="Fundamentals of theory and practice in the world of UI/UX design"
-            hours="5 Hours"
-            videos="25 Video"
-            students="1,150 Students"
-            image={content4}
-            rating="4.9"
-          />
-        </div>
+        {filteredCourses.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-500 text-lg">No courses found matching your search.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {filteredCourses.map((course, index) => (
+              <CourseCard
+                key={index}
+                title={course.title}
+                description={course.description}
+                hours={course.hours}
+                videos={course.videos}
+                students={course.students}
+                image={course.image}
+                rating={course.rating}
+              />
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );

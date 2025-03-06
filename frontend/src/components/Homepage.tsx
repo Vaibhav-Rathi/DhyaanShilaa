@@ -17,12 +17,20 @@ export const Homepage = () => {
         <HeroSection />
         <StatsSection />
         <BenefitsSection />
+        <section id="about">
         <AboutSection />
+      </section>
+      <section id="courses">
         <CourseSection />
+      </section>
         <TestimonialSection />
+        <section id="faq">
         <FaqSection />
+      </section>
         <RegistrationPage/>
-        <BlogNewsEvents/>
+        <section id="blog">
+        <BlogNewsEvents />
+      </section>
         <Footer/>
       </div>
     );

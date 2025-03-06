@@ -89,10 +89,9 @@ const AdminDashboard: React.FC = () => {
           }`}
         >
           <ul className="flex flex-col md:flex-row md:space-x-4">
-            <li className="font-semibold py-2 md:py-0">Dashboard</li>
-            <li className="text-gray-300 py-2 md:py-0">Reports</li>
-            <li className="text-gray-300 py-2 md:py-0">Analytics</li>
-            <li className="text-gray-300 py-2 md:py-0">Settings</li>
+            <h1 className='text-3xl '>
+              Admin Dashboard
+            </h1>
           </ul>
         </nav>
 

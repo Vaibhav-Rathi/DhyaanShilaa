@@ -5,10 +5,10 @@ export const HeroSection = () => {
       <div className="container mx-auto px-6 sm:px-8 lg:px-16 py-16 flex flex-col md:flex-row items-center">
         <div className="md:w-1/2 text-center md:text-left mb-8 md:mb-0">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-            Build and Realize Aspirations with [Edutech] Institute.
+            Build and Realize Aspirations with Einfratech Institute.
           </h1>
           <p className="mb-8 text-indigo-100">
-            [Edutech]'s platform delivers educational experiences at affordable prices so you can develop skills to achieve your professional growth and success.
+          Einfratech's platform delivers educational experiences at affordable prices so you can develop skills to achieve your professional growth and success.
           </p>
           <div className="flex flex-col sm:flex-row justify-center md:justify-start space-y-4 sm:space-y-0 sm:space-x-4">
             <button className="bg-yellow-400 hover:bg-yellow-500 text-indigo-900 font-medium px-6 py-3 rounded">

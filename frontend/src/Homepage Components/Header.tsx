@@ -6,6 +6,23 @@ export const Header = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Function to handle smooth scrolling with proper TypeScript types
+  const scrollToSection = (sectionId: string, event: React.MouseEvent<HTMLAnchorElement>): void => {
+    event.preventDefault();
+    const element = document.getElementById(sectionId);
+    
+    if (element) {
+      // Close mobile menu after clicking a link
+      setIsMenuOpen(false);
+      
+      // Smooth scroll to the section
+      element.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+  };
+
   return (
     <header className="bg-indigo-900 text-white">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
@@ -30,11 +47,41 @@ export const Header = () => {
             isMenuOpen ? "block" : "hidden"
           } md:flex`}
         >
-          <a href="#" className="block md:inline hover:text-yellow-300">HOME</a>
-          <a href="#" className="block md:inline hover:text-yellow-300">ABOUT US</a>
-          <a href="#" className="block md:inline hover:text-yellow-300">COURSES</a>
-          <a href="#" className="block md:inline hover:text-yellow-300">FAQ</a>
-          <a href="#" className="block md:inline hover:text-yellow-300">BLOG</a>
+          <a 
+            href="#home" 
+            className="block md:inline hover:text-yellow-300"
+            onClick={(e) => scrollToSection('home', e)}
+          >
+            HOME
+          </a>
+          <a 
+            href="#about" 
+            className="block md:inline hover:text-yellow-300"
+            onClick={(e) => scrollToSection('about', e)}
+          >
+            ABOUT US
+          </a>
+          <a 
+            href="#courses" 
+            className="block md:inline hover:text-yellow-300"
+            onClick={(e) => scrollToSection('courses', e)}
+          >
+            COURSES
+          </a>
+          <a 
+            href="#faq" 
+            className="block md:inline hover:text-yellow-300"
+            onClick={(e) => scrollToSection('faq', e)}
+          >
+            FAQ
+          </a>
+          <a 
+            href="#blog" 
+            className="block md:inline hover:text-yellow-300"
+            onClick={(e) => scrollToSection('blog', e)}
+          >
+            BLOG
+          </a>
         </nav>
         
         <div className="hidden md:flex space-x-3">

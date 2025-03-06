@@ -7,7 +7,7 @@ const testimonials = [
   },
   {
     quote:
-      "EduTech provided me with industry-relevant skills. The hands-on projects made learning more effective and practical.",
+      "Einfratech provided me with industry-relevant skills. The hands-on projects made learning more effective and practical.",
     name: "Priya Verma",
     role: "Data Analyst",
   },
@@ -25,7 +25,7 @@ export const TestimonialSection = () => {
       <div className="container mx-auto px-4 text-center">
         <h2 className="text-3xl flex justify-center font-bold text-gray-900 mb-8 flex-wrap">
           What They Say About
-          <div className="ml-2 mr-2 text-blue-500">[Edutech]</div> Courses
+          <div className="ml-2 mr-2 text-blue-500">Einfratech</div> Courses
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

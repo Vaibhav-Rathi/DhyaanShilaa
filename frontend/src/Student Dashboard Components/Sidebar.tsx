@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
   return (
     <div className="w-64 h-screen bg-gray-50 shadow-md flex flex-col fixed">
       <div className="bg-blue-900 text-white text-2xl font-bold text-center py-6">
-        [EduTech]
+        Einfratech
       </div>
       <ul className="mt-4">
         {tabs.map((tab) => (

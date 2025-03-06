@@ -4,7 +4,7 @@ import { Edit, MoreVert, Delete, DragHandle } from '@mui/icons-material';
 
 const sectionTitles = ['Basic Information', 'Advance Information', 'Curriculum', 'Publish Course'];
 
-const EduTechDashboard: React.FC = () => {
+const EinfratechDashboard: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<string>('Curriculum');
   const [sections, setSections] = useState<{ name: string; lectures: { name: string }[] }[]>([{
     name: '',
@@ -96,4 +96,4 @@ const EduTechDashboard: React.FC = () => {
   );
 };
 
-export default EduTechDashboard;
+export default EinfratechDashboard;

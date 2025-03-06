@@ -9,10 +9,10 @@ export const AboutSection = () => {
             ABOUT US
           </h3>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-900 leading-tight mb-4 animate-slide-up">
-            [Edutech]: Elevate Your Learning Journey
+            Einfratech: Elevate Your Learning Journey
           </h2>
           <p className="text-gray-700 text-base sm:text-lg leading-relaxed mb-6 animate-fade-in">
-            [Edutech] is your ultimate e-learning platform, designed to make education accessible and empowering for learners worldwide.
+            Einftatech is your ultimate e-learning platform, designed to make education accessible and empowering for learners worldwide.
           </p>
         </div>
 
