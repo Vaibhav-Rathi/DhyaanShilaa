@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaTachometerAlt, FaBook, FaCalendarAlt, FaCog, FaQuestionCircle, FaClock, FaVideo, FaUsers, FaStar, FaChevronDown } from 'react-icons/fa';
+import { FaBook, FaVideo, FaUsers, FaStar } from 'react-icons/fa';
 import content1 from '../assets/web_development.png';
 import content2 from '../assets/digital_marketing.png';
 import content3 from '../assets/machinelearning.png';
@@ -258,9 +258,6 @@ function ContentDashboard(): React.ReactElement {
     }
   }, [searchQuery, courses]);
   
-  const handleCreateCourse = (): void => { 
-    setShowCourseAdvance(true);
-  };
   
   const handleBackToDashboard = (): void => {
     setShowCourseAdvance(false);
@@ -296,11 +293,7 @@ function ContentDashboard(): React.ReactElement {
         return content4;
     }
   };
-  
-  // Function to format duration for display
-  const formatDuration = (duration: { value: number; unit: string }): string => {
-    return `${duration.value} ${duration.unit}${duration.value !== 1 ? 's' : ''}`;
-  };
+
 
   return (
     <div className="flex flex-col md:flex-row h-screen bg-gray-100">
@@ -365,7 +358,7 @@ function ContentDashboard(): React.ReactElement {
   );
 }
 
-export function CourseCard({ title, description, duration, level, category, subCategory, thumbnail, instructor }: CourseCardProps): React.ReactElement {
+export function CourseCard({ title, description, level, category, subCategory, thumbnail, instructor }: CourseCardProps): React.ReactElement {
   // Format the duration for display
   
   // Use placeholder values for videos and students since they're not in the API response

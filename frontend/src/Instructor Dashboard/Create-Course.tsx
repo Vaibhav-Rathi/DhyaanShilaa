@@ -10,9 +10,6 @@ import {
   FaListOl,
   FaImage,
   FaPlayCircle,
-  FaEdit,
-  FaTrash,
-  FaGripLines,
 } from "react-icons/fa";
 
 import instructor1 from "../assets/instructor1.jpg";
@@ -27,10 +24,6 @@ interface Instructor {
   img: string;
 }
 
-interface Lecture {
-  name: string;
-}
-
 const Header: React.FC = () => {
   return (
     <div className="m-5">
@@ -41,8 +34,6 @@ const Header: React.FC = () => {
 
 export const CreateCourse: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("basic");
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [newSectionName, setNewSectionName] = useState<string>("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailName, setThumbnailName] = useState<string>("");
   const [lecture, setLecture] = useState<File | null>(null);
@@ -51,7 +42,7 @@ export const CreateCourse: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
   const [lecturePreview, setLecturePreview] = useState<string>("");
-  const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
+  const [, setDropdownOpen] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
@@ -68,7 +59,7 @@ export const CreateCourse: React.FC = () => {
   const [welcomeMessage, setWelcomeMessage] = useState<string>("");
   const [congratsMessage, setCongratsMessage] = useState<string>("");
 
-  const [allInstructors, setAllInstructors] = useState<Instructor[]>([
+  const [allInstructors, ] = useState<Instructor[]>([
     {
       id: "instructor1",
       name: "John Doe",
