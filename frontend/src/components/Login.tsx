@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -8,6 +8,14 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  // Load the token from localStorage when the component mounts
+  useEffect(() => {
+    const storedToken = localStorage.getItem("authToken");
+    if (storedToken) {
+      axios.defaults.headers.common["Authorization"] = storedToken;
+    }
+  }, []);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
@@ -23,8 +31,12 @@ const LoginPage = () => {
     
       const token = response.data.token;
       if (token) {
-        localStorage.setItem("authToken", `Bearer ${token}`);
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`; 
+        // Store the token in localStorage
+        const bearerToken = `Bearer ${token}`;
+        localStorage.setItem("authToken", bearerToken);
+        
+        // Set the Authorization header for current session
+        axios.defaults.headers.common["Authorization"] = bearerToken; 
       }
   
       const userRole = response.data.user?.role || "student";
@@ -125,7 +137,7 @@ const LoginPage = () => {
                   </svg>
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.022 10.022 0 0112 19c-5.523 0-10-4.477-10-10 0-1.902.53-3.678 1.46-5.175m7.036 7.036A3 3 0 1112 5m4.536 4.536A9.978 9.978 0 0121 12a9.978 9.978 0 01-2.464 6.464m-3.929-3.929A3 3 0 1112 19" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.875 18.825A10.022 10.022 0 0112 19c-5.523 0-10-4.477-10-10 0-1.902.53-3.678 1.46-5.175m7.036 7.036A3 3 0 1112 5m4.536 4.536A9.978 9.978 0 0021 12a9.978 9.978 0 01-2.464 6.464m-3.929-3.929A3 3 0 1112 19" />
                   </svg>
                 )}
               </button>

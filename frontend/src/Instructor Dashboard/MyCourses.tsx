@@ -367,7 +367,6 @@ function ContentDashboard(): React.ReactElement {
 
 export function CourseCard({ title, description, duration, level, category, subCategory, thumbnail, instructor }: CourseCardProps): React.ReactElement {
   // Format the duration for display
-  const durationText = `${duration.value} ${duration.unit}${duration.value !== 1 ? 's' : ''}`;
   
   // Use placeholder values for videos and students since they're not in the API response
   const videos = "15+ Videos";
@@ -390,7 +389,6 @@ export function CourseCard({ title, description, duration, level, category, subC
         <div className="flex items-center"><FaBook className="mr-1" /><span>{category} • {subCategory}</span></div>
       </div>
       <div className="flex justify-between items-center text-sm text-gray-600">
-        <div className="flex items-center"><FaClock className="mr-1" /><span>{durationText}</span></div>
         <div className="flex items-center"><FaVideo className="mr-1" /><span>{videos}</span></div>
         <div className="flex items-center"><FaUsers className="mr-1" /><span>{students}</span></div>
       </div>

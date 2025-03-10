@@ -1,4 +1,4 @@
-export const CourseOverviewChart = ({ Line }:any) => {
+export const CourseOverviewChart = ({ Line, windowWidth }:any) => {
   const courseOverviewData = {
     labels: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
     datasets: [
@@ -27,26 +27,26 @@ export const CourseOverviewChart = ({ Line }:any) => {
         beginAtZero: true,
         ticks: {
           font: {
-            size: 10
+            size: windowWidth < 768 ? 8 : 10
           }
         }
       },
       x: {
         ticks: {
           font: {
-            size: 10
+            size: windowWidth < 768 ? 8 : 10
           }
         }
       }
     },
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: 'top',
         labels: {
-          boxWidth: 10,
-          padding: 10,
+          boxWidth: windowWidth < 768 ? 8 : 10,
+          padding: windowWidth < 768 ? 6 : 10,
           font: {
-            size: 12
+            size: windowWidth < 768 ? 10 : 12
           }
         }
       }
@@ -54,9 +54,9 @@ export const CourseOverviewChart = ({ Line }:any) => {
   };
 
   return (
-    <div className="bg-white p-3 sm:p-4 md:p-6 shadow rounded-lg w-full">
-      <h3 className="text-base sm:text-lg font-bold mb-2 sm:mb-4">Course Overview</h3>
-      <div className="w-full h-40 sm:h-48 md:h-64 lg:h-80">
+    <div className="bg-white p-3 sm:p-4 md:p-6 shadow rounded-lg h-full">
+      <h3 className="text-base sm:text-lg font-bold mb-2">Course Overview</h3>
+      <div className="h-40 sm:h-48 md:h-56 lg:h-64">
         <Line
           data={courseOverviewData}
           options={courseOverviewOptions}

@@ -10,6 +10,14 @@ dotenv.config();
 
 const app = express();
 
+app.use(
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+    createParentPath: true,
+  })
+);
+
 app.use(express.json());
 app.use(
   cors({
@@ -20,7 +28,6 @@ app.use(
   })
 );
 
-app.use(fileUpload());
 app.get("/", (req, res) => {
   res.send("API is running...");
 });

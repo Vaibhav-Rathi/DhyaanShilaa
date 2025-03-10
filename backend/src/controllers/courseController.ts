@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Course, { ICourse } from "../models/Course";
 import { JwtPayload } from "jsonwebtoken";
+import path from "path";
+import fs from "fs";
 
 interface AuthenticatedRequest extends Request {
   user?: JwtPayload & { id: string };
@@ -107,6 +109,7 @@ export const getCourse = async (req: Request, res: Response) => {
   }
 };
 
+
 export const createCourse = async (req: AuthenticatedRequest, res: Response) => {
   try {
     if (!req.user) {
@@ -114,25 +117,18 @@ export const createCourse = async (req: AuthenticatedRequest, res: Response) => 
     }
 
     const { files, body } = req as any;
-
     body.instructor = req.user.id;
 
     if (files?.thumbnail) {
-      body.thumbnail = files.thumbnail.data;
-      body.thumbnailContentType = files.thumbnail.mimetype;
+      const thumbnailPath = path.join(__dirname, "../uploads", files.thumbnail.name);
+      await files.thumbnail.mv(thumbnailPath); // Move file to server
+      body.thumbnail = `/uploads/${files.thumbnail.name}`; // Store file path
     }
 
-    if (files?.trailer) {
-      body.trailer = files.trailer.data;
-      body.trailerContentType = files.trailer.mimetype;
-    }
-
-    if (files?.lectures) {
-      body.curriculum = files.lectures.map((lecture: any) => ({
-        lecture: lecture.data,
-        lectureContentType: lecture.mimetype,
-        subLectures: [],
-      }));
+    if (files?.lecture) {
+      const lecturePath = path.join(__dirname, "../uploads", files.lecture.name);
+      await files.lecture.mv(lecturePath);
+      body.lecture = `/uploads/${files.lecture.name}`;
     }
 
     const course = await Course.create(body);

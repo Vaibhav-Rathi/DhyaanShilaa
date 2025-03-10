@@ -206,16 +206,12 @@ export const deleteUser = async (req: Request, res: Response) => {
 };
 
 
-
-
 const sendTokenResponse = (user: IUser, statusCode: number, res: Response) => {
   const token = user.getSignedJwtToken();
 
-  res.setHeader("Authorization", `Bearer ${token}`); 
-
   res.status(statusCode).json({
     success: true,
-    token,
+    token, 
     user: {
       id: user._id,
       name: user.name,

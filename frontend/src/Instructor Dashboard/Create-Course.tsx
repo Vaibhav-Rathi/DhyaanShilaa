@@ -10,15 +10,11 @@ import {
   FaListOl,
   FaImage,
   FaPlayCircle,
-  FaEllipsisV,
   FaEdit,
   FaTrash,
   FaGripLines,
 } from "react-icons/fa";
-import { FiSearch } from "react-icons/fi";
-import { IoIosNotificationsOutline } from "react-icons/io";
 
-import profilePic from "../assets/image.png";
 import instructor1 from "../assets/instructor1.jpg";
 import instructor2 from "../assets/instructor2.jpg";
 import { Sidebar } from "./Sidebar";
@@ -35,23 +31,6 @@ interface Lecture {
   name: string;
 }
 
-interface FileContent {
-  name: string;
-  type: string;
-  url: string;
-}
-
-interface Section {
-  name: string;
-  lectures: Lecture[];
-  files: FileContent[];
-}
-
-interface CurrentLecture {
-  section: number;
-  lecture: number;
-}
-
 const Header: React.FC = () => {
   return (
     <div className="m-5">
@@ -62,35 +41,21 @@ const Header: React.FC = () => {
 
 export const CreateCourse: React.FC = () => {
   const [activeTab, setActiveTab] = useState<string>("basic");
-  const [sections, setSections] = useState<Section[]>([
-    { name: "", lectures: [], files: [] },
-  ]);
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [menuPosition, setMenuPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
-  const [currentLecture, setCurrentLecture] = useState<CurrentLecture>({
-    section: 0,
-    lecture: 0,
-  });
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const [newSectionName, setNewSectionName] = useState<string>("");
-  const [thumbnail, setThumbnail] = useState<File | string>("");
+  const [thumbnail, setThumbnail] = useState<File | null>(null);
   const [thumbnailName, setThumbnailName] = useState<string>("");
-  const [trailerName, setTrailerName] = useState<string>("");
-  const [trailer, setTrailer] = useState<File | string>("");
+  const [lecture, setLecture] = useState<File | null>(null);
+  const [lectureName, setLectureName] = useState<string>("");
   const [uploadMessage, setUploadMessage] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
-  const [trailerPreview, setTrailerPreview] = useState<string>("");
+  const [lecturePreview, setLecturePreview] = useState<string>("");
   const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const [isEditingThumbnail, setIsEditingThumbnail] = useState<boolean>(false);
-  const [isEditingTrailer, setIsEditingTrailer] = useState<boolean>(false);
-  const [welcomeMessage, setWelcomeMessage] = useState<string>("");
-  const [congratsMessage, setCongratsMessage] = useState<string>("");
-  const [editingLecture, setEditingLecture] = useState<CurrentLecture | null>(null);
   const navigate = useNavigate();
 
-  // New state variables for basic information
+  // Basic information
   const [title, setTitle] = useState<string>("");
   const [subtitle, setSubtitle] = useState<string>("");
   const [category, setCategory] = useState<string>("");
@@ -99,9 +64,9 @@ export const CreateCourse: React.FC = () => {
   const [language, setLanguage] = useState<string>("");
   const [subtitleLanguage, setSubtitleLanguage] = useState<string>("");
   const [level, setLevel] = useState<string>("");
-  const [durationValue, setDurationValue] = useState<string>("");
-  const [durationUnit, setDurationUnit] = useState<string>("Day");
   const [description, setDescription] = useState<string>("");
+  const [welcomeMessage, setWelcomeMessage] = useState<string>("");
+  const [congratsMessage, setCongratsMessage] = useState<string>("");
 
   const [allInstructors, setAllInstructors] = useState<Instructor[]>([
     {
@@ -143,123 +108,39 @@ export const CreateCourse: React.FC = () => {
     );
   };
 
-  const addLecture = (sectionIndex: number) => {
-    const newSections = [...sections];
-    newSections[sectionIndex].lectures.push({ name: "" });
-    setSections(newSections);
-    setCurrentLecture({
-      section: sectionIndex,
-      lecture: newSections[sectionIndex].lectures.length - 1,
-    });
-  };
-
-  const updateLecture = (sectionIndex: number, lectureIndex: number, value: string) => {
-    const newSections = [...sections];
-    newSections[sectionIndex].lectures[lectureIndex].name = value;
-    setSections(newSections);
-  };
-
-  const handleContentsClick = (e: React.MouseEvent, sectionIndex: number, lectureIndex: number) => {
-    e.preventDefault();
-    const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
-    setMenuPosition({
-      top: rect.bottom + window.scrollY,
-      left: rect.left + window.scrollX,
-    });
-    setCurrentLecture({ section: sectionIndex, lecture: lectureIndex });
-    setMenuOpen(true);
-  };
-
-  const handleMenuClose = () => {
-    setMenuOpen(false);
-    setDropdownOpen(null);
-  };
-
-  const addContentOption = (option: string, sectionIndex?: number) => {
-    if (option === "Video" || option === "Attach File") {
-      const input = document.createElement("input");
-      input.type = "file";
-      input.accept = option === "Video" ? "video/*" : ".pdf";
-      input.onchange = (e) => {
-        if (sectionIndex !== undefined) {
-          handleFileUpload(e as unknown as React.ChangeEvent<HTMLInputElement>, sectionIndex, option);
-        }
-        handleMenuClose();
-      };
-      input.click();
-    }
-    handleMenuClose();
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, sectionIndex: number, type: string) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const newSections = [...sections];
-      newSections[sectionIndex].files.push({
-        name: file.name,
-        type: type,
-        url: URL.createObjectURL(file),
-      });
-      setSections(newSections);
-    }
-  };
-
-  const addSection = () => {
-    setSections([...sections, { name: "", lectures: [], files: [] }]);
-  };
-
-  const handleSaveEdit = (sectionIndex: number) => {
-    const newSections = [...sections];
-    newSections[sectionIndex].name = newSectionName;
-    setSections(newSections);
-    setEditingIndex(null);
-  };
-
-  const handleEdit = (sectionIndex: number) => {
-    setEditingIndex(sectionIndex);
-    setNewSectionName(sections[sectionIndex].name);
-  };
-
-  const handleDelete = (sectionIndex: number) => {
-    const newSections = sections.filter((_, index) => index !== sectionIndex);
-    setSections(newSections);
-  };
-
   const handleThumbnailUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       setThumbnail(file);
       setThumbnailName(file.name);
       setThumbnailPreview(URL.createObjectURL(file));
-      setIsEditingThumbnail(false);
     }
   };
 
-  const handleTrailerUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLectureUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      setTrailer(file);
-      setTrailerName(file.name);
-      setTrailerPreview(URL.createObjectURL(file));
-      setIsEditingTrailer(false);
+      setLecture(file);
+      setLectureName(file.name);
+      setLecturePreview(URL.createObjectURL(file));
     }
   };
 
   const handleDeleteThumbnail = () => {
-    setThumbnail("");
+    setThumbnail(null);
     setThumbnailName("");
     setThumbnailPreview("");
   };
 
-  const handleDeleteTrailer = () => {
-    setTrailer("");
-    setTrailerName("");
-    setTrailerPreview("");
+  const handleDeleteLecture = () => {
+    setLecture(null);
+    setLectureName("");
+    setLecturePreview("");
   };
 
   const handleSaveAndNext = () => {
-    if (!thumbnail || !trailer) {
-      setErrorMessage("Please upload both the course thumbnail and trailer.");
+    if (!thumbnail) {
+      setErrorMessage("Please upload course thumbnail.");
       setUploadMessage("");
       return;
     }
@@ -271,85 +152,85 @@ export const CreateCourse: React.FC = () => {
 
   const submitCourse = async () => {
     try {
-      if (!title) {
-        setErrorMessage("Course title is required.");
+      if (!title || !subtitle || !category || !subCategory || !topic || 
+          !language || !level || !description || 
+          !welcomeMessage || !congratsMessage) {
+        setErrorMessage("Please fill in all required fields.");
         return;
       }
-
-      if (!thumbnail || !trailer) {
-        setErrorMessage("Please upload both the course thumbnail and trailer.");
+  
+      if (!thumbnail || !(thumbnail instanceof File)) {
+        console.error("Thumbnail is not a valid file:", thumbnail);
+        setErrorMessage("Invalid thumbnail file.");
         return;
       }
-
-      const courseData = {
-        title: title,
-        subtitle: subtitle,
-        category: category,
-        subCategory: subCategory,
-        topic: topic,
-        language: language,
-        subtitleLanguage: subtitleLanguage,
-        level: level,
-        duration: {
-          value: durationValue,
-          unit: durationUnit,
-        },
-        
-        // Advanced information
-        description: description,
-        thumbnailContentType: thumbnailName,
-        trailerContentType: trailerName,
-        
-        // Curriculum
-        sections: sections,
-        
-        // Publish information
-        welcomeMessage: welcomeMessage,
-        congratsMessage: congratsMessage,
-        instructors: selectedInstructors.map(instructor => instructor.id),
-
-        createdAt: new Date(),
-      };
-
-      // For file uploads, you need to use FormData
+  
+      if (!lecture || !(lecture instanceof File)) {
+        console.error("Lecture is not a valid file:", lecture);
+        setErrorMessage("Invalid lecture file.");
+        return;
+      }
+  
+      if (selectedInstructors.length === 0 || !selectedInstructors[0]?.id) {
+        setErrorMessage("Please select at least one instructor.");
+        return;
+      }
+  
       const formData = new FormData();
-      formData.append('courseData', JSON.stringify(courseData));
-      
-      // If thumbnail and trailer are File objects, append them to FormData
-      if (thumbnail instanceof File) {
-        formData.append('thumbnail', thumbnail);
+      formData.append("thumbnail", thumbnail);
+      formData.append("lecture", lecture);
+  
+      const courseData = {
+        title,
+        subtitle,
+        category,
+        subCategory,
+        topic,
+        language,
+        subtitleLanguage: subtitleLanguage || "",
+        level,
+        description,
+        welcomeMessage,
+        congratulationsMessage: congratsMessage,
+        instructor: selectedInstructors[0].id,
+        createdAt: new Date().toISOString(),
+      };
+  
+      Object.entries(courseData).forEach(([key, value]) => {
+        formData.append(key, value);
+      });
+  
+      // Debugging: Log FormData
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
       }
-      
-      if (trailer instanceof File) {
-        formData.append('trailer', trailer);
-      }
-
+  
       setUploadMessage("Submitting course...");
       setErrorMessage("");
-
-      // Send the data to your API
-      const response = await axios.post('http://localhost:3000/api/courses/', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
+  
+      // Corrected Axios request
+      const response = await axios.post(
+        "http://localhost:3000/api/courses",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
         }
-      });
-
-      // Handle successful response
-      console.log('Course submitted successfully:', response.data);
-      setUploadMessage('Course submitted successfully!');
-      
-      // Navigate to dashboard after successful submission
+      );
+  
+      console.log("Course submitted successfully:", response.data);
+      setUploadMessage("Course submitted successfully!");
+  
       setTimeout(() => {
-        navigate('/ins-dashboard/my-courses');
+        navigate("/ins-dashboard/my-courses");
       }, 2000);
-      
     } catch (error) {
-      console.error('Error submitting course:', error);
-      setErrorMessage('Failed to submit course. Please try again.');
+      console.error("Error submitting course:", error);
+      setErrorMessage("Failed to submit course. Please try again.");
       setUploadMessage("");
     }
   };
-
+  
+  
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -501,27 +382,6 @@ export const CreateCourse: React.FC = () => {
                       <option value="all">All Levels</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="block text-gray-700">Duration</label>
-                    <div className="flex gap-1">
-                      <input
-                        type="text"
-                        placeholder="Duration"
-                        className="w-2/3 border p-1 rounded text-gray-700"
-                        value={durationValue}
-                        onChange={(e) => setDurationValue(e.target.value)}
-                      />
-                      <select 
-                        className="w-1/3 border p-1 rounded text-gray-700"
-                        value={durationUnit}
-                        onChange={(e) => setDurationUnit(e.target.value)}
-                      >
-                        <option value="Day">Day</option>
-                        <option value="Week">Week</option>
-                        <option value="Month">Month</option>
-                      </select>
-                    </div>
-                  </div>
                   <div className="col-span-2 flex justify-between mt-2">
                     <button
                       type="button"
@@ -589,7 +449,6 @@ export const CreateCourse: React.FC = () => {
                               alt="Thumbnail Preview"
                               className="w-32 h-20 object-cover cursor-pointer"
                               onClick={() => {
-                                setIsEditingThumbnail(true);
                                 document.getElementById("thumbnail-upload")?.click();
                               }}
                             />
@@ -606,7 +465,7 @@ export const CreateCourse: React.FC = () => {
                   </div>
                   <div className="w-full flex flex-col mb-3 md:w-[48%]">
                     <h3 className="text-sm font-bold mb-2 text-center">
-                      Course Trailer
+                      Course Lecture
                     </h3>
                     <div className="flex flex-col items-center text-center border-2 border-dashed border-gray-400 p-5 rounded-md bg-gray-50 flex-grow w-full md:flex-row md:items-center md:text-left">
                       <div className="flex-0 flex justify-center items-center">
@@ -614,44 +473,40 @@ export const CreateCourse: React.FC = () => {
                       </div>
                       <div className="flex-1 pl-5">
                         <p className="text-xs text-gray-600 mb-2">
-                          Students who watch a well-made promo video are 5x more
-                          likely to enroll in your course. We've seen that
-                          statistic go up to 10X for exceptionally awesome
-                          videos.
+                          Upload your main course lecture. This is required for course submission.
                         </p>
                         <input
                           type="file"
                           accept="video/*"
-                          onChange={handleTrailerUpload}
+                          onChange={handleLectureUpload}
                           className="hidden"
-                          id="trailer-upload"
+                          id="lecture-upload"
                         />
                         <label
-                          htmlFor="trailer-upload"
+                          htmlFor="lecture-upload"
                           className="bg-[#ffe0b2] text-gray-800 border-none p-2 px-4 rounded-md cursor-pointer"
                         >
-                          {trailerName ? "Change Video" : "Upload Video"}
+                          {lectureName ? "Change Video" : "Upload Video"}
                         </label>
-                        {trailerName && (
+                        {lectureName && (
                           <p className="mt-2 text-gray-700">
-                            Uploaded: {trailerName}
+                            Uploaded: {lectureName}
                           </p>
                         )}
-                        {trailerPreview && (
+                        {lecturePreview && (
                           <div className="mt-2">
                             <video
                               controls
                               className="w-full h-20 cursor-pointer"
                               onClick={() => {
-                                setIsEditingTrailer(true);
-                                document.getElementById("trailer-upload")?.click();
+                                document.getElementById("lecture-upload")?.click();
                               }}
                             >
-                              <source src={trailerPreview} type="video/mp4" />
+                              <source src={lecturePreview} type="video/mp4" />
                               Your browser does not support the video tag.
                             </video>
                             <button
-                              onClick={handleDeleteTrailer}
+                              onClick={handleDeleteLecture}
                               className="mt-2 px-2 py-1 bg-red-500 text-white rounded"
                             >
                               Delete
@@ -713,7 +568,7 @@ export const CreateCourse: React.FC = () => {
                   <h2 className="text-xl font-bold">Course Curriculum</h2>
                 </div>
 
-                {/* Display Thumbnail and Trailer in Curriculum Tab */}
+                {/* Display Thumbnail and Lecture in Curriculum Tab */}
                 <div className="mb-4">
                   <h3 className="text-lg font-bold">Course Thumbnail</h3>
                   {thumbnailPreview ? (
@@ -727,183 +582,16 @@ export const CreateCourse: React.FC = () => {
                   )}
                 </div>
                 <div className="mb-4">
-                  <h3 className="text-lg font-bold">Course Trailer</h3>
-                  {trailerPreview ? (
+                  <h3 className="text-lg font-bold">Course Lecture</h3>
+                  {lecturePreview ? (
                     <video controls className="w-full h-20">
-                      <source src={trailerPreview} type="video/mp4" />
+                      <source src={lecturePreview} type="video/mp4" />
                       Your browser does not support the video tag.
                     </video>
                   ) : (
-                    <p>No trailer uploaded.</p>
+                    <p>No lecture uploaded.</p>
                   )}
                 </div>
-
-                {sections.map((section, sectionIndex) => (
-                  <div
-                    key={sectionIndex}
-                    className="mb-4 border border-gray-200 rounded-md"
-                  >
-                    <div className="p-3">
-                      <div className="flex justify-between items-center border border-blue-300 p-3 rounded mb-2">
-                        <div className="flex items-center">
-                          <FaGripLines className="text-xs mr-1 cursor-grab text-gray-500" />
-                          {editingIndex === sectionIndex ? (
-                            <input
-                              type="text"
-                              value={newSectionName}
-                              onChange={(e) =>
-                                setNewSectionName(e.target.value)
-                              }
-                              className="text-sm font-medium border-b border-gray-300 focus:outline-none"
-                            />
-                          ) : (
-                            <h3 className="text-sm font-medium">
-                              {`Section ${sectionIndex + 1}: ${
-                                section.name || "Section Name"
-                              }`}
-                            </h3>
-                          )}
-                        </div>
-                        <div className="flex items-center">
-                          <button
-                            onClick={() => setDropdownOpen(sectionIndex)}
-                            className="px-3 py-1 mt-2 bg-red-100 text-red-600 rounded text-sm mr-2  hover:bg-red-200"
-                          >
-                            +
-                          </button>
-                          {dropdownOpen === sectionIndex && (
-                            <div
-                              className="absolute bg-white border border-gray-200 rounded shadow-md p-2 mt-2"
-                              ref={dropdownRef}
-                            >
-                              <div
-                                className="p-2 hover:bg-gray-100 cursor-pointer text-sm"
-                                onClick={() =>
-                                addContentOption("Video", sectionIndex)
-                                }
-                              >
-                                Upload Video
-                              </div>
-                              <div
-                                className="p-2 hover:bg-gray-100 cursor-pointer text-sm"
-                                onClick={() =>
-                                  addContentOption("Attach File", sectionIndex)
-                                }
-                              >
-                                Attach File
-                              </div>
-                            </div>
-                          )}
-                          {editingIndex === sectionIndex ? (
-                            <button
-                              className="px-3 py-1 mt-2 bg-red-100 text-red-600 rounded text-sm mr-2  hover:bg-red-200"
-                              onClick={() => handleSaveEdit(sectionIndex)}
-                            >
-                              Save
-                            </button>
-                          ) : (
-                            <button
-                              className="px-3 py-1 mt-2 bg-red-100 text-red-600 rounded text-sm mr-1  hover:bg-red-200"
-                              onClick={() => handleEdit(sectionIndex)}
-                            >
-                              <FaEdit className="text-xs" />
-                            </button>
-                          )}
-                          <button
-                            className="px-3 py-1 mt-2 bg-red-100 text-red-600 rounded text-sm mr-1  hover:bg-red-200"
-                            onClick={() => handleDelete(sectionIndex)}
-                          >
-                            <FaTrash className="text-xs" />
-                          </button>
-                          <button className="px-3 py-1 mt-2 bg-red-100 text-red-600 rounded text-sm mr-1  hover:bg-red-200">
-                            <FaEllipsisV className="text-xs" />
-                          </button>
-                        </div>
-                      </div>
-
-                      <button
-                        onClick={() => addLecture(sectionIndex)}
-                        className="px-3 py-1 mt-2 bg-red-100 text-red-600 rounded text-sm  hover:bg-red-200"
-                      >
-                        Add Lecture
-                      </button>
-                      <div className="mt-2">
-                        {section.lectures.map((lecture, lectureIndex) => (
-                          <div
-                            key={lectureIndex}
-                            className="flex items-center justify-between border-b border-gray-200 py-2"
-                          >
-                            <div className="flex items-center w-full">
-                              <FaGripLines className="text-xs mr-2 cursor-grab text-gray-500" />
-                              <input
-                                type="text"
-                                value={lecture.name}
-                                onChange={(e) =>
-                                  updateLecture(
-                                    sectionIndex,
-                                    lectureIndex,
-                                    e.target.value
-                                  )
-                                }
-                                placeholder="Lecture Name"
-                                className="w-full p-1 text-sm border-none focus:outline-none"
-                              />
-                            </div>
-                            <div className="flex items-center">
-                              <button
-                                className="px-3 py-1 mt-2 bg-red-100 text-red-600 rounded text-sm mr-1  hover:bg-red-200"
-                                onClick={() => {
-                                  setEditingLecture({
-                                    section: sectionIndex,
-                                    lecture: lectureIndex,
-                                  });
-                                }}
-                              >
-                                <FaEdit className="text-xs" />
-                              </button>
-                              <button
-                                className="px-3 py-1 mt-2 bg-red-100 text-red-600 rounded text-sm mr-1  hover:bg-red-200"
-                                onClick={() => {
-                                  const newSections = [...sections];
-                                  newSections[sectionIndex].lectures.splice(
-                                    lectureIndex,
-                                    1
-                                  );
-                                  setSections(newSections);
-                                }}
-                              >
-                                <FaTrash className="text-xs" />
-                              </button>
-                            </div>
-                          </div>
-                        ))}
-                        {section.files.map((file, fileIndex) => (
-                          <div
-                            key={fileIndex}
-                            className="flex items-center justify-between border-b border-gray-200 py-2"
-                          >
-                            <span className="text-sm">{file.name}</span>
-                            <a
-                              href={file.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-blue-500 text-xs"
-                            >
-                              View
-                            </a>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-
-                <button
-                  onClick={addSection}
-                  className="px-4 py-2 bg-red-100 text-red-600 rounded text-sm  hover:bg-red-200"
-                >
-                  Add Section
-                </button>
 
                 <div className="flex justify-between mt-6">
                   <button
@@ -919,29 +607,6 @@ export const CreateCourse: React.FC = () => {
                     Save & Next
                   </button>
                 </div>
-
-                {menuOpen && (
-                  <div
-                    className="absolute bg-white border border-gray-200 rounded shadow-md p-1 z-10"
-                    style={{ top: menuPosition.top, left: menuPosition.left }}
-                  >
-                    {[
-                      "Video",
-                      "Attach File",
-                      "Captions",
-                      "Description",
-                      "Lecture Notes",
-                    ].map((option, idx) => (
-                      <div
-                        key={idx}
-                        className="p-2 hover:bg-gray-100 cursor-pointer text-sm"
-                        onClick={() => addContentOption(option)}
-                      >
-                        {option}
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
             )}
             {activeTab === "publish" && (
@@ -1029,11 +694,21 @@ export const CreateCourse: React.FC = () => {
                     Prev Step
                   </button>
                   <button 
-                  onClick={submitCourse}
-                  className="px-4 py-2 bg-yellow-400 rounded-md w-full md:w-auto">
+                    onClick={submitCourse}
+                    className="px-4 py-2 bg-yellow-400 rounded-md w-full md:w-auto">
                     Submit For Review
                   </button>
                 </div>
+                {errorMessage && (
+                  <div className="mt-4 p-2 bg-red-100 text-red-800 border border-red-300 rounded">
+                    {errorMessage}
+                  </div>
+                )}
+                {uploadMessage && (
+                  <div className="mt-4 p-2 bg-green-100 text-green-800 border border-green-300 rounded">
+                    {uploadMessage}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -1041,6 +716,4 @@ export const CreateCourse: React.FC = () => {
       </div>
     </div>
   );
-}
-
-                                    
+};
