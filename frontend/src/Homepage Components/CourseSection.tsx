@@ -1,5 +1,23 @@
-export const CourseSection = () => {
-  const courses = [
+import React, { useState } from 'react';
+
+// Define types for the course object
+interface Course {
+  title: string;
+  description: string;
+  hours: string;
+  views: string;
+  students: string;
+  tag: 'NEW' | 'HOT' | 'TOP';
+  image: string;
+  category: string;
+}
+
+// Define props for the CourseCard component
+interface CourseCardProps extends Course {}
+
+export const CourseSection: React.FC = () => {
+  // All available courses
+  const allCourses: Course[] = [
     {
       title: "Basics of Web Programming",
       description: "Learn frontend and backend development to create stunning websites and web apps.",
@@ -8,6 +26,7 @@ export const CourseSection = () => {
       students: "133 Students",
       tag: "NEW",
       image: "/CourseImage1.png",
+      category: "Development"
     },
     {
       title: "Digital Marketing 101",
@@ -17,6 +36,7 @@ export const CourseSection = () => {
       students: "95 Students",
       tag: "HOT",
       image: "/CourseImage2.png",
+      category: "Marketing"
     },
     {
       title: "Data Science Fundamentals",
@@ -26,8 +46,25 @@ export const CourseSection = () => {
       students: "219 Students",
       tag: "TOP",
       image: "/CourseImage3.png",
+      category: "Data Science"
     },
   ];
+
+  // State for selected category
+  const [selectedCategory, setSelectedCategory] = useState<string>("All Categories");
+
+  // Filter courses based on selected category
+  const filteredCourses = selectedCategory === "All Categories" 
+    ? allCourses 
+    : allCourses.filter(course => course.category === selectedCategory);
+
+  // Handle category change
+  const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedCategory(event.target.value);
+  };
+
+  // Get unique categories for dropdown
+  const categories = ["All Categories", ...Array.from(new Set(allCourses.map(course => course.category)))];
 
   return (
     <section className="py-16 bg-gradient-to-br from-gray-50 to-blue-50">
@@ -38,11 +75,14 @@ export const CourseSection = () => {
 
         <div className="flex flex-col sm:flex-row sm:justify-between items-center gap-4 mb-8">
           <div className="relative w-full sm:w-auto">
-            <select className="w-full sm:w-auto appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-10 text-gray-700 cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
-              <option>All Categories</option>
-              <option>Development</option>
-              <option>Marketing</option>
-              <option>Data Science</option>
+            <select 
+              className="w-full sm:w-auto appearance-none bg-white border border-gray-300 rounded-md py-2 pl-3 pr-10 text-gray-700 cursor-pointer shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              value={selectedCategory}
+              onChange={handleCategoryChange}
+            >
+              {categories.map((category, index) => (
+                <option key={index} value={category}>{category}</option>
+              ))}
             </select>
             <div className="absolute inset-y-0 right-3 flex items-center text-gray-700 pointer-events-none">
               <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
@@ -50,13 +90,10 @@ export const CourseSection = () => {
               </svg>
             </div>
           </div>
-          <button className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-5 py-2 rounded-md shadow-md transition w-full sm:w-auto">
-            See All
-          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {courses.map((course, index) => (
+          {filteredCourses.map((course, index) => (
             <CourseCard key={index} {...course} />
           ))}
         </div>
@@ -65,7 +102,16 @@ export const CourseSection = () => {
   );
 };
 
-export const CourseCard = ({ title, description, hours, views, students, tag, image }: any) => {
+export const CourseCard: React.FC<CourseCardProps> = ({ 
+  title, 
+  description, 
+  hours, 
+  views, 
+  students, 
+  tag, 
+  image, 
+  category 
+}) => {
   return (
     <div className="bg-white rounded-xl overflow-hidden shadow-lg transform transition duration-300 hover:scale-105">
       <img src={image} alt={`${title} Course`} className="w-full h-48 object-cover" />
@@ -95,12 +141,15 @@ export const CourseCard = ({ title, description, hours, views, students, tag, im
           </div>
         </div>
 
-        <div className={`px-3 py-1 text-xs font-semibold rounded-md inline-block ${
-          tag === "NEW" ? "bg-blue-100 text-blue-600" : 
-          tag === "HOT" ? "bg-red-100 text-red-600" : 
-          "bg-green-100 text-green-600"
-        }`}>
-          {tag}
+        <div className="flex justify-between items-center">
+          <div className={`px-3 py-1 text-xs font-semibold rounded-md inline-block ${
+            tag === "NEW" ? "bg-blue-100 text-blue-600" : 
+            tag === "HOT" ? "bg-red-100 text-red-600" : 
+            "bg-green-100 text-green-600"
+          }`}>
+            {tag}
+          </div>
+          <span className="text-xs text-gray-500">{category}</span>
         </div>
       </div>
     </div>

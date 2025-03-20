@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  ChevronLeft, ChevronRight, ChevronDown, Search, Bell, Settings, User, Menu, X, ChevronUp 
+   ChevronRight, ChevronDown, Search, Bell, User, Menu, X, ChevronUp 
 } from 'lucide-react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
