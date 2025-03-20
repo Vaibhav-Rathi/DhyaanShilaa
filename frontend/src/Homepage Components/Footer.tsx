@@ -12,7 +12,7 @@ export const Footer = () => {
               <div className="bg-yellow-500 text-indigo-950 px-3 py-2 rounded-md">
                 <div className="font-bold text-xs">Contact Us</div>
                 <div className="text-xs mt-1">info@Einfratechsys.com</div>
-                <div className="text-xs">(625) 333 222 123</div>
+                <div className="text-xs"></div>
               </div>
             </div>
   
@@ -51,7 +51,7 @@ export const Footer = () => {
           </div>
   
           <div className="border-t border-gray-800 mt-8 pt-4 flex flex-col md:flex-row justify-between items-center">
-            <div className="text-gray-500 text-xs">© {new Date().getFullYear()} DhyaanShila. All rights reserved.</div>
+            <div className="text-gray-500 text-xs">© {new Date().getFullYear()} Einfratech. All rights reserved.</div>
             <div className="flex space-x-4 text-xs text-gray-400 mt-2 md:mt-0">
               {["Home", "About Us", "Courses", "FAQ", "Blog"].map((link, index) => (
                 <a key={index} href="#" className="hover:text-yellow-500">{link}</a>
