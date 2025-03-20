@@ -6,6 +6,7 @@ import Sidebar from "../Student Dashboard Components/Sidebar";
 import profileImage from "/image.png";
 import { useNavigate } from "react-router-dom";
 
+
 type Course = {
   id: number;
   title: string;
@@ -17,7 +18,9 @@ type User = {
   role: string;
 };
 
-const user: User = { name: "User", role: "Frontend Developer" };
+const userName = localStorage.getItem("userName") || "User";
+
+const user: User = { name: userName, role: "Frontend Developer" };
 
 const courses: Course[] = [
   { id: 1, title: "Basics Web Programming", progress: 20 },
@@ -50,7 +53,8 @@ const StudentDashboard: React.FC = () => {
             </div>
             <button
             onClick={() => {
-              localStorage.removeItem("authToken"); // Clear authToken from localStorage
+              localStorage.removeItem("authToken"); 
+              localStorage.removeItem("token"); 
               navigate("/login");
             }}
             className="border-1 rounded-md p-2 bg-blue-800 hover:bg-blue-500 text-white"

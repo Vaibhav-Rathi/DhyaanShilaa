@@ -9,7 +9,6 @@ const LoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Load the token from localStorage when the component mounts
   useEffect(() => {
     const storedToken = localStorage.getItem("authToken");
     if (storedToken) {
@@ -28,6 +27,9 @@ const LoginPage = () => {
         credentials,
         { withCredentials: true }
       );
+
+      const name = response.data.user?.name;
+      localStorage.setItem("userName", name);
     
       const token = response.data.token;
       if (token) {
@@ -37,6 +39,7 @@ const LoginPage = () => {
         
         // Set the Authorization header for current session
         axios.defaults.headers.common["Authorization"] = bearerToken; 
+
       }
   
       const userRole = response.data.user?.role || "student";

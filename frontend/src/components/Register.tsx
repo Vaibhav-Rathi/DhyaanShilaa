@@ -29,7 +29,6 @@ const RegistrationPage = () => {
   const registerUser = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validate email before submission
     if (!validateEmail(user.email)) {
       setErrors({ ...errors, email: "Please enter a valid email address" });
       return;
@@ -37,7 +36,17 @@ const RegistrationPage = () => {
 
     try {
       const response = await axios.post("http://localhost:3000/api/auth/register", user);
-      console.log("Registration successful:", response.data);
+      const token = response.data.token;
+      if (token) {
+        const bearerToken = `Bearer ${token}`;
+        localStorage.setItem("authToken", bearerToken);
+
+        axios.defaults.headers.common["Authorization"] = bearerToken; 
+      }
+
+      const name = response.data.user?.name;
+      localStorage.setItem("userName", name);
+      
       navigate("/dashboard");
     } catch (error: unknown) {
       if (axios.isAxiosError(error)) {
